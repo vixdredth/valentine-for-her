@@ -18,11 +18,11 @@
 body {
     background: black;
     color: white;
-    /* PERBAIKAN 1: Izinkan scroll agar tombol di bawah terlihat */
-    overflow-x: hidden;
-    overflow-y: auto; 
+    overflow-x: hidden; /* Hilangkan scroll samping */
+    overflow-y: auto;   /* Izinkan scroll bawah manual */
     text-align: center;
     min-height: 100vh;
+    padding-bottom: 50px;
 }
 
 /* ====================================
@@ -41,7 +41,7 @@ body {
 }
 
 .netflix-logo {
-    font-size: 4rem;
+    font-size: 3.5rem;
     font-weight: 900;
     color: #e50914;
     opacity: 0;
@@ -63,10 +63,9 @@ body {
     top: 0; left: 0;
     width: 100%;
     height: 100%;
-    /* Ganti background jadi statis gelap biar teks lebih terbaca */
-    background: radial-gradient(circle at center, #220000, #000000); 
+    /* Background statis & gelap agar teks kontras */
+    background: radial-gradient(circle at center, #330000, #000000 80%);
     z-index: -1;
-    transition: filter 3s ease;
 }
 
 #startScreen {
@@ -95,24 +94,27 @@ body {
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
     transition: transform 0.2s;
-    margin-top: 20px; /* Jarak aman */
 }
 .btn:hover { transform: scale(1.05); }
 
 /* ====================================
    3. MAIN CONTENT (PHOTO & TEXT)
 ==================================== */
-/* PERBAIKAN 2: Ubah posisi container agar fleksibel (tidak absolute) */
+/* PERBAIKAN PENTING DI SINI:
+   Menggunakan margin-top besar, bukan absolute positioning.
+   Ini mencegah teks bagian atas terpotong saat teks makin panjang.
+*/
 .container {
     position: relative;
-    width: 90%;
+    width: 85%;
     max-width: 600px;
-    margin: 80px auto 50px auto; /* Margin atas bawah agar tidak mepet */
+    /* Jarak dari atas layar supaya foto tidak nempel di status bar HP */
+    margin: 100px auto 20px auto; 
     opacity: 0;
     visibility: hidden;
     transition: opacity 1.5s ease;
     z-index: 10;
-    padding-bottom: 50px; /* Ruang untuk tombol */
+    text-align: center;
 }
 
 .container.active {
@@ -127,30 +129,31 @@ body {
     object-fit: cover;
     border: 3px solid white;
     box-shadow: 0 0 30px rgba(229, 9, 20, 0.5);
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     transition: transform 5s ease;
 }
 
 .photo.zoom {
-    transform: scale(2.5);
+    transform: scale(2.0);
     opacity: 0; 
 }
 
 h1 {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     font-size: 1.8rem;
     color: #e50914;
     text-shadow: 0 2px 5px black;
 }
 
+/* CSS AGAR TEKS RAPI */
 .message {
     font-size: 1.1rem;
     line-height: 1.6;
     min-height: 100px;
-    margin-bottom: 30px;
-    white-space: pre-line; 
+    margin-bottom: 40px;
+    white-space: pre-line; /* Agar enter terbaca sebagai baris baru */
     text-shadow: 0 2px 4px black;
-    text-align: center;
+    color: #f0f0f0;
 }
 
 /* ====================================
@@ -161,9 +164,9 @@ h1 {
     top: 0; left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none; /* Biar bisa diklik tembus kalau perlu */
+    pointer-events: none; 
     z-index: 20;
-    display: none; /* Sembunyikan dulu */
+    display: none; 
 }
 
 .credits {
@@ -195,7 +198,7 @@ h1 {
     background: black;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 5s ease;
+    transition: opacity 4s ease;
     z-index: 99;
 }
 
@@ -312,28 +315,32 @@ has been the most beautiful chapter of my life.`;
         }, 1000);
     }
 
-    // 3. Efek Mengetik
+    // 3. Efek Mengetik (DIPERBAIKI: Tanpa Auto Scroll Agresif)
     function typeWriter(i) {
         if (!isTyping) return;
 
         if (i < message.length) {
             textElement.textContent += message.charAt(i);
             
-            // Scroll otomatis ke bawah mengikuti teks
-            window.scrollTo({
-                top: document.body.scrollHeight,
-                behavior: 'smooth'
-            });
+            // LOGIKA BARU: Scroll hanya terjadi kalau ganti baris (\n)
+            // Ini mencegah efek "bergetar" setiap huruf
+            if (message.charAt(i) === '\n') {
+                window.scrollTo({
+                    top: document.body.scrollHeight,
+                    behavior: 'smooth'
+                });
+            }
 
+            // Pengaturan kecepatan ketik
             let char = message.charAt(i);
-            let speed = (char === "." || char === "\n") ? 400 : 40;
-            speed += Math.random() * 10;
+            let speed = (char === "." || char === "\n") ? 500 : 40;
+            speed += Math.random() * 15; // Sedikit variasi biar natural
 
             typingTimer = setTimeout(() => typeWriter(i + 1), speed);
         } else {
             // Selesai ngetik
             fadeInButton();
-            // Scroll sekali lagi memastikan tombol terlihat
+            // Scroll sedikit di akhir untuk memastikan tombol terlihat
             setTimeout(() => {
                 window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
             }, 500);
@@ -359,7 +366,7 @@ has been the most beautiful chapter of my life.`;
         isTyping = false;
         clearTimeout(typingTimer);
         
-        // Scroll ke atas sedikit biar foto kelihatan saat di-zoom
+        // Scroll balik ke atas supaya efek zoom foto kelihatan
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
         document.getElementById("photo").classList.add("zoom");
@@ -396,197 +403,4 @@ has been the most beautiful chapter of my life.`;
 </script>
 
 </body>
-</html>            <div class="netflix-logo">N</div>
-    </div>
-
-    <div class="background" id="bg"></div>
-
-    <div id="startScreen">
-        <button class="btn" onclick="startStory()">Play Movie 🎬</button>
-    </div>
-
-    <div class="container" id="mainContent">
-        <img src="her-photo.jpg" class="photo" id="photo" alt="Her Photo">
-        
-        <h1>Our Story</h1>
-        
-        <div class="message" id="text"></div>
-        
-        <button class="btn" id="endBtn" onclick="showEnding()" style="display:none; margin: 0 auto;">
-            The Ending ❤️
-        </button>
-    </div>
-
-    <div id="final">
-        <div class="credits" id="creditsText">
-            <h2>Forever & Always</h2>
-            <p>Based on a True Story</p><br><br>
-            
-            <p><strong>Starring</strong></p>
-            <p>You</p>
-            <p>&</p>
-            <p>Me</p><br><br>
-            
-            <p>Music by</p>
-            <p>Our Heartbeats</p><br><br>
-            
-            <p>If the world forgets us,</p>
-            <p>I will remind the stars</p>
-            <p>that you were loved.</p><br>
-            <p>Deeply.</p>
-            <p>Truly.</p><br><br>
-            
-            <p>Thank you for being my person.</p><br><br>
-            <h2>The End</h2>
-        </div>
-    </div>
-
-    <div id="blackout"></div>
-
-    <audio id="bgm" loop>
-        <source src="https://files.catbox.moe/zs81ug.mp3" type="audio/mpeg">
-    </audio>
-
-<script>
-    // --- KONFIGURASI ---
-    const textElement = document.getElementById("text");
-    const endBtn = document.getElementById("endBtn");
-    const bgm = document.getElementById("bgm");
-    let isTyping = false;
-    let typingTimer;
-
-    // --- PESAN CINTA (Gunakan Enter untuk baris baru) ---
-    const message = `There are moments in life that feel ordinary.
-And then there are moments that change everything.
-
-Meeting you was never loud or dramatic.
-It was quiet.
-But inside me… everything shifted.
-
-You became the peace in my chaos.
-The warmth in my coldest nights.
-
-Every laugh we shared,
-every memory we built,
-it’s not just moments.
-They are pieces of forever.
-
-I want you to remember this:
-You are loved fiercely.
-Deeply.
-Without hesitation.
-
-Because loving you...
-has been the most beautiful chapter of my life.`;
-
-    // 1. Loading Selesai -> Hapus Intro
-    window.onload = function() {
-        setTimeout(() => {
-            document.getElementById("intro").style.display = "none";
-            const startScreen = document.getElementById("startScreen");
-            startScreen.style.visibility = "visible";
-            startScreen.style.opacity = "1";
-        }, 3500);
-    };
-
-    // 2. Tombol Play Ditekan
-    function startStory() {
-        // Hilangkan tombol start
-        document.getElementById("startScreen").style.opacity = "0";
-        setTimeout(() => {
-            document.getElementById("startScreen").style.display = "none";
-        }, 1000);
-
-        // Munculkan konten utama
-        const mainContent = document.getElementById("mainContent");
-        mainContent.classList.add("active");
-
-        // Putar Musik
-        bgm.volume = 0.6;
-        bgm.play().catch(error => {
-            console.log("Autoplay blocked, user interaction needed first.");
-        });
-
-        // Mulai Ngetik setelah jeda sedikit
-        setTimeout(() => {
-            isTyping = true;
-            typeWriter(0);
-        }, 1500);
-    }
-
-    // 3. Efek Mengetik (Typewriter)
-    function typeWriter(i) {
-        if (!isTyping) return; // Stop jika user klik ending duluan
-
-        if (i < message.length) {
-            textElement.textContent += message.charAt(i);
-            
-            // Logika Kecepatan:
-            // Jika titik/koma/enter = lambat. Huruf biasa = cepat.
-            let char = message.charAt(i);
-            let speed = (char === "." || char === "\n") ? 500 : 50;
-            
-            // Randomize sedikit biar natural
-            speed += Math.random() * 20;
-
-            typingTimer = setTimeout(() => typeWriter(i + 1), speed);
-        } else {
-            // Selesai ngetik -> Munculkan tombol Ending
-            fadeInButton();
-        }
-    }
-
-    function fadeInButton() {
-        endBtn.style.display = "block";
-        endBtn.style.opacity = 0;
-        let val = 0;
-        let fade = setInterval(() => {
-            if (val < 1) {
-                val += 0.05;
-                endBtn.style.opacity = val;
-            } else {
-                clearInterval(fade);
-            }
-        }, 50);
-    }
-
-    // 4. Animasi Ending
-    function showEnding() {
-        isTyping = false; // Stop mesin tik
-        clearTimeout(typingTimer);
-
-        // Zoom Foto
-        document.getElementById("photo").classList.add("zoom");
-        
-        // Blur Background
-        document.getElementById("bg").style.filter = "blur(10px) brightness(0.3)";
-
-        // Hilangkan Teks Utama
-        document.getElementById("mainContent").style.opacity = "0";
-
-        // Jalankan Credit Scene
-        setTimeout(() => {
-            document.getElementById("creditsText").classList.add("roll");
-        }, 1000);
-
-        // Fade Out Musik Pelan-pelan
-        let vol = 0.6;
-        let fadeAudio = setInterval(() => {
-            if (vol > 0.05) {
-                vol -= 0.02;
-                bgm.volume = vol;
-            } else {
-                bgm.pause();
-                clearInterval(fadeAudio);
-            }
-        }, 300);
-
-        // Layar Hitam Total setelah credit (kira-kira 30 detik)
-        setTimeout(() => {
-            document.getElementById("blackout").style.opacity = "1";
-        }, 30000);
-    }
-</script>
-
-</body>
-</html>    
+   </html>
