@@ -3,9 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Our Forever ❤️</title>
+<title>Netflix Romance Original ❤️</title>
 
 <style>
+
+/* ====================================
+   1. GLOBAL
+==================================== */
 *{
     margin:0;
     padding:0;
@@ -20,99 +24,10 @@ body{
     text-align:center;
 }
 
-/* Background */
-.background{
-    position:fixed;
-    width:100%;
-    height:100%;
-    background: radial-gradient(circle at center, rgba(255,105,180,0.4), black 70%);
-    animation: zoomBg 25s infinite alternate;
-    z-index:-2;
-}
-
-@keyframes zoomBg{
-    from{transform:scale(1);}
-    to{transform:scale(1.15);}
-}
-
-/* Blur cinematic */
-.blur{
-    filter:blur(15px);
-    transition:2s ease;
-}
-
-/* Main container */
-.container{
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    width:90%;
-    max-width:800px;
-    transition:1.5s ease;
-}
-
-.hideMain{
-    opacity:0;
-    pointer-events:none;
-}
-
-.photo{
-    width:220px;
-    height:220px;
-    border-radius:50%;
-    object-fit:cover;
-    border:5px solid white;
-    box-shadow:0 0 40px rgba(255,105,180,0.8);
-    margin-bottom:20px;
-    transition:4s ease;
-}
-
-.zoomEnding{
-    transform:scale(1.4);
-}
-
-h1{
-    font-size:2.3em;
-    margin-bottom:20px;
-}
-
-.message{
-    font-size:1.1em;
-    min-height:140px;
-    margin-bottom:25px;
-    line-height:1.6em;
-}
-
-button{
-    padding:12px 30px;
-    border:none;
-    border-radius:30px;
-    background:#ff4da6;
-    color:white;
-    font-size:1em;
-    cursor:pointer;
-    transition:0.3s;
-}
-
-button:hover{
-    transform:scale(1.1);
-}
-
-/* Start Screen */
-#startScreen{
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:black;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:10;
-}
-
-/* FINAL SCENE */
-#finalScene{
+/* ====================================
+   2. NETFLIX INTRO
+==================================== */
+#intro{
     position:fixed;
     width:100%;
     height:100%;
@@ -121,147 +36,351 @@ button:hover{
     justify-content:center;
     align-items:center;
     flex-direction:column;
+    z-index:100;
+}
+
+.red-sweep{
+    position:absolute;
+    width:200%;
+    height:6px;
+    background:linear-gradient(90deg, transparent, #e50914, transparent);
+    top:50%;
+    left:-100%;
+    animation:sweep 2s ease forwards;
+}
+
+@keyframes sweep{
+    from{left:-100%;}
+    to{left:100%;}
+}
+
+.netflix-logo{
+    font-size:130px;
+    font-weight:900;
+    color:#e50914;
+    opacity:0;
+    transform:scale(0.6);
+    animation:logoAnim 3s forwards;
+}
+
+@keyframes logoAnim{
+    0%{opacity:0; transform:scale(0.6);}
+    40%{opacity:1; transform:scale(1.2);}
+    70%{transform:scale(1);}
+    100%{opacity:0;}
+}
+
+/* ====================================
+   3. BACKGROUND
+==================================== */
+.background{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background: radial-gradient(circle at center, rgba(255,0,0,0.2), black 70%);
+    animation:bgZoom 30s infinite alternate;
+    transition:2s ease;
+    z-index:-2;
+}
+
+.background.blur{
+    filter:blur(20px) brightness(0.4);
+}
+
+@keyframes bgZoom{
+    from{transform:scale(1);}
+    to{transform:scale(1.2);}
+}
+
+/* ====================================
+   4. START SCREEN
+==================================== */
+#startScreen{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:black;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    visibility:hidden;
+    z-index:10;
+}
+
+.btn{
+    padding:14px 35px;
+    border:none;
+    border-radius:30px;
+    background:#e50914;
+    color:white;
+    font-size:1em;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.btn:hover{
+    transform:scale(1.1);
+}
+
+/* ====================================
+   5. MAIN STORY
+==================================== */
+.container{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:90%;
+    max-width:800px;
+    transition:2s ease;
+}
+
+.container.hide{
+    opacity:0;
+}
+
+.photo{
+    width:230px;
+    height:230px;
+    border-radius:50%;
+    object-fit:cover;
+    border:5px solid white;
+    box-shadow:0 0 60px rgba(255,0,0,0.7);
+    margin-bottom:25px;
+    transition:6s ease;
+}
+
+.photo.zoom{
+    transform:scale(1.5);
+}
+
+h1{
+    font-size:2.4em;
+    margin-bottom:20px;
+}
+
+.message{
+    font-size:1.15em;
+    line-height:1.7em;
+    min-height:160px;
+    margin-bottom:30px;
+}
+
+/* ====================================
+   6. FINAL CREDIT
+==================================== */
+#final{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:black;
     opacity:0;
     visibility:hidden;
     transition:2s ease;
-    text-align:center;
-    padding:20px;
     z-index:20;
 }
 
-#finalScene.show{
+#final.show{
     opacity:1;
     visibility:visible;
 }
 
-.credit{
-    margin-top:40px;
-    font-size:0.9em;
-    opacity:0;
-    animation:creditFade 5s forwards;
-    animation-delay:3s;
+.credits{
+    position:absolute;
+    bottom:-100%;
+    width:100%;
+    animation:scrollUp 50s linear forwards;
 }
 
-@keyframes creditFade{
-    from{opacity:0;}
-    to{opacity:1;}
+@keyframes scrollUp{
+    from{transform:translateY(0);}
+    to{transform:translateY(-260%);}
 }
+
+.blackFade{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:black;
+    opacity:0;
+    transition:4s ease;
+    z-index:30;
+}
+
+.blackFade.show{
+    opacity:1;
+}
+
 </style>
 </head>
 
 <body>
 
+<!-- ================= INTRO ================= -->
+<div id="intro">
+    <div class="red-sweep"></div>
+    <div class="netflix-logo">N</div>
+</div>
+
 <div class="background" id="bg"></div>
 
+<!-- ================= START ================= -->
 <div id="startScreen">
-    <button onclick="startExperience()">Tap to Start Our Story ❤️</button>
+    <button class="btn" onclick="startStory()">NETFLIX ROMANCE ❤️</button>
 </div>
 
+<!-- ================= STORY ================= -->
 <div class="container" id="mainContent">
-
-    <img src="her-photo.jpg" class="photo" id="herPhoto">
-
-    <h1>Our Love Story ❤️</h1>
-
+    <img src="her-photo.jpg" class="photo" id="photo">
+    <h1>Our Love Story</h1>
     <div class="message" id="text"></div>
-
-    <button onclick="showFinal()">Watch The Ending 🎬</button>
-
+    <button class="btn" onclick="showEnding()">Watch The Ending 🎬</button>
 </div>
 
-<div id="finalScene">
-    <div style="font-size:2em;">
-        In every lifetime,<br>
-        in every universe,<br><br>
-        I would still choose you.<br><br>
-        Forever. ❤️
-    </div>
-
-    <div class="credit">
-        Directed by Fate<br>
-        Produced by Destiny<br>
-        Starring: You & Me
+<!-- ================= ENDING ================= -->
+<div id="final">
+    <div class="credits">
+        <h2>Forever & Always</h2>
+        <p>A Love That Changed Everything</p><br><br>
+        <p>Directed by Fate</p>
+        <p>Written by Destiny</p>
+        <p>Produced by the Universe</p><br><br>
+        <p>Starring</p>
+        <p>You</p>
+        <p>And</p>
+        <p>Me</p><br><br>
+        <p>If one day the sun grows faint...</p>
+        <p>and all the stars dim...</p>
+        <p>I want you to remember this:</p><br>
+        <p>You were loved deeply.</p>
+        <p>Completely.</p>
+        <p>Without hesitation.</p><br><br>
+        <p>And in every lifetime,</p>
+        <p>my soul will still choose yours.</p><br><br><br>
+        <h2>The End</h2>
     </div>
 </div>
 
+<div class="blackFade" id="blackFade"></div>
+
+<!-- ================= AUDIO ================= -->
 <audio id="bgm" loop preload="auto">
-    <source src="https://files.catbox.moe/zs81ug.mp3" type="audio/mpeg">
+  <source src="https://files.catbox.moe/zs81ug.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="whoosh" preload="auto">
+  <source src="https://cdn.pixabay.com/audio/2021/08/04/audio_cae9d97166.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 
-/* START */
-function startExperience(){
-    const audio = document.getElementById("bgm");
+/* ================= INTRO SEQUENCE ================= */
+window.onload = function(){
+    const whoosh = document.getElementById("whoosh");
+    whoosh.volume = 0.8;
+    whoosh.play();
 
-    audio.pause();
+    setTimeout(()=>{
+        document.getElementById("intro").style.display="none";
+        document.getElementById("startScreen").style.visibility="visible";
+    },3000);
+};
+
+/* ================= STORY START ================= */
+function startStory(){
+    const audio = document.getElementById("bgm");
     audio.currentTime = 0;
     audio.volume = 0;
+    audio.play();
 
-    audio.play().then(()=>{
-        let fade = setInterval(()=>{
-            if(audio.volume < 1){
-                audio.volume += 0.05;
-            } else {
-                clearInterval(fade);
-            }
-        },200);
-    });
+    let fade = setInterval(()=>{
+        if(audio.volume < 1){
+            audio.volume += 0.04;
+        } else clearInterval(fade);
+    },200);
 
     document.getElementById("startScreen").style.display="none";
     typeWriter();
 }
 
-/* TYPEWRITER */
-const message = `From the first time I saw you, my world changed.
-You became my favorite chapter, my favorite smile, my favorite everything.
-If love was a movie, you would be my most beautiful scene.
-And I promise, this is only the beginning of our forever.`;
+/* ================= TYPING STORY ================= */
+const message = `There are moments in life that feel ordinary.
 
-let i=0;
+And then there are moments that change everything.
+
+Meeting you was never loud or dramatic.
+It was quiet.
+
+But inside me…
+everything shifted.
+
+You became the peace in my chaos.
+The warmth in my coldest nights.
+The voice in my silent prayers.
+
+You are the kind of person
+I didn’t know my heart always wanted,
+but now can’t imagine life without.
+
+Every laugh we shared,
+every memory we built,
+it’s not just moments.
+
+They are pieces of forever
+being written one second at a time.
+
+If someday life tests us,
+if storms rage around us,
+if time tries to prove us wrong…
+
+I want you to remember this:
+You were loved fiercely.
+Deeply.
+Without hesitation.
+
+And if this world ever forgets our story…
+I won’t.
+
+Because loving you
+has been the most beautiful chapter
+of my entire life.`;
+
+let i = 0;
 function typeWriter(){
     if(i < message.length){
         document.getElementById("text").innerHTML += message.charAt(i);
+
+        let speed = (message.charAt(i)==="." || message.charAt(i)==="\n")?450:35;
         i++;
-        setTimeout(typeWriter,40);
+        setTimeout(typeWriter, speed);
     }
 }
 
-/* FINAL */
-function showFinal(){
-
+/* ================= ENDING ANIMATION ================= */
+function showEnding(){
     const audio = document.getElementById("bgm");
-    const photo = document.getElementById("herPhoto");
-    const finalScene = document.getElementById("finalScene");
+    const photo = document.getElementById("photo");
     const main = document.getElementById("mainContent");
     const bg = document.getElementById("bg");
+    const final = document.getElementById("final");
+    const black = document.getElementById("blackFade");
 
-    // Zoom photo
-    photo.classList.add("zoomEnding");
-
-    // Blur background
+    photo.classList.add("zoom");
     bg.classList.add("blur");
 
-    // Fade out music
+    setTimeout(()=> main.classList.add("hide"),1800);
+    setTimeout(()=> final.classList.add("show"),2800);
+
     let fadeOut = setInterval(()=>{
-        if(audio.volume > 0.05){
-            audio.volume -= 0.05;
-        } else {
-            audio.volume = 0;
+        if(audio.volume > 0.02){
+            audio.volume -= 0.02;
+        } else{
             audio.pause();
             clearInterval(fadeOut);
         }
-    },200);
+    },300);
 
-    // Hide main content smoothly
-    setTimeout(()=>{
-        main.classList.add("hideMain");
-    },1500);
-
-    // Show final scene
-    setTimeout(()=>{
-        finalScene.classList.add("show");
-    },2500);
+    setTimeout(()=> black.classList.add("show"),48000);
 }
 
 </script>
