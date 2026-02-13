@@ -119,29 +119,7 @@ button:hover{
 
 <body>
 
-<div class="background"></div>
 
-<div id="music-container">
-  <button onclick="playMusic()">Play Our Song ❤️</button>
-</div>
-
-<iframe id="ytplayer"
-  width="0"
-  height="0"
-  src=""
-  frameborder="0"
-  allow="autoplay">
-</iframe>
-
-<script>
-function playMusic() {
-  document.getElementById("ytplayer").src =
-    "https://www.youtube.com/embed/https://youtu.be/mZcoOmGLp4M?si=h1VA0hysPL3giSED?autoplay=1&loop=1&playlist=https://youtu.be/mZcoOmGLp4M?si=h1VA0hysPL3giSED";
-}
-</script>
-   
-
-<div class="container">
     
     <!-- GANTI FOTO DI SINI -->
     <img src="her-photo.jpg" alt="Her Photo" class="photo">
@@ -151,7 +129,31 @@ function playMusic() {
     <button onclick="showFinal()">Watch The Ending 🎬</button>
 </div>
 
-<div id="finalScene">
+<<div id="startScreen">
+  <button id="startBtn">Tap to Start Our Story ❤️</button>
+</div>
+
+<div id="player" style="display:none;">
+  <iframe
+    width="300"
+    height="170"
+    src=""
+    frameborder="0"
+    allow="autoplay"
+    allowfullscreen>
+  </iframe>
+</div>
+
+<script>
+document.getElementById("startBtn").onclick = function() {
+  document.getElementById("player").style.display = "block";
+  document.querySelector("#player iframe").src =
+    "https://www.youtube.com/embed/mZcoOmGLp4M?autoplay=1&loop=1&playlist=mZcoOmGLp4M";
+  document.getElementById("startScreen").style.display = "none";
+};
+</script>
+
+    <div id="finalScene">
     <div>
         In every lifetime,<br>
         in every universe,<br><br>
