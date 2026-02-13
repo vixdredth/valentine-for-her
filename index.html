@@ -18,8 +18,11 @@
 body {
     background: black;
     color: white;
-    overflow: hidden;
+    /* PERBAIKAN 1: Izinkan scroll agar tombol di bawah terlihat */
+    overflow-x: hidden;
+    overflow-y: auto; 
     text-align: center;
+    min-height: 100vh;
 }
 
 /* ====================================
@@ -27,6 +30,7 @@ body {
 ==================================== */
 #intro {
     position: fixed;
+    top: 0; left: 0;
     width: 100%;
     height: 100%;
     background: black;
@@ -37,7 +41,7 @@ body {
 }
 
 .netflix-logo {
-    font-size: 4rem; /* Mobile friendly */
+    font-size: 4rem;
     font-weight: 900;
     color: #e50914;
     opacity: 0;
@@ -52,28 +56,25 @@ body {
 }
 
 /* ====================================
-   2. BACKGROUND & START
+   2. BACKGROUND
 ==================================== */
 .background {
     position: fixed;
+    top: 0; left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at center, rgba(139, 0, 0, 0.4), black 90%);
-    animation: pulseBg 10s infinite alternate;
+    /* Ganti background jadi statis gelap biar teks lebih terbaca */
+    background: radial-gradient(circle at center, #220000, #000000); 
     z-index: -1;
     transition: filter 3s ease;
 }
 
-@keyframes pulseBg {
-    from { transform: scale(1); }
-    to { transform: scale(1.1); }
-}
-
 #startScreen {
     position: fixed;
+    top: 0; left: 0;
     width: 100%;
     height: 100%;
-    background: black; /* Tutup layar sampai intro selesai */
+    background: black;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -94,23 +95,24 @@ body {
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
     transition: transform 0.2s;
+    margin-top: 20px; /* Jarak aman */
 }
 .btn:hover { transform: scale(1.05); }
 
 /* ====================================
    3. MAIN CONTENT (PHOTO & TEXT)
 ==================================== */
+/* PERBAIKAN 2: Ubah posisi container agar fleksibel (tidak absolute) */
 .container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: relative;
     width: 90%;
     max-width: 600px;
+    margin: 80px auto 50px auto; /* Margin atas bawah agar tidak mepet */
     opacity: 0;
     visibility: hidden;
     transition: opacity 1.5s ease;
     z-index: 10;
+    padding-bottom: 50px; /* Ruang untuk tombol */
 }
 
 .container.active {
@@ -118,39 +120,37 @@ body {
     visibility: visible;
 }
 
-/* PENTING: Style Foto */
 .photo {
-    width: 160px;
-    height: 160px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     object-fit: cover;
     border: 3px solid white;
     box-shadow: 0 0 30px rgba(229, 9, 20, 0.5);
     margin-bottom: 20px;
-    transition: transform 5s ease, opacity 2s ease;
+    transition: transform 5s ease;
 }
 
-/* Efek Zoom saat ending */
 .photo.zoom {
     transform: scale(2.5);
     opacity: 0; 
 }
 
 h1 {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     font-size: 1.8rem;
     color: #e50914;
     text-shadow: 0 2px 5px black;
 }
 
-/* FIX STUCK TEXT: white-space pre-line agar enter terbaca */
 .message {
-    font-size: 1rem;
+    font-size: 1.1rem;
     line-height: 1.6;
-    min-height: 200px;
-    margin-bottom: 25px;
+    min-height: 100px;
+    margin-bottom: 30px;
     white-space: pre-line; 
     text-shadow: 0 2px 4px black;
+    text-align: center;
 }
 
 /* ====================================
@@ -158,37 +158,38 @@ h1 {
 ==================================== */
 #final {
     position: fixed;
+    top: 0; left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none;
+    pointer-events: none; /* Biar bisa diklik tembus kalau perlu */
     z-index: 20;
+    display: none; /* Sembunyikan dulu */
 }
 
 .credits {
     position: absolute;
-    bottom: -100px; /* Mulai di bawah layar */
+    bottom: -100px; 
     width: 100%;
     text-align: center;
     opacity: 0;
 }
 
-/* Animasi Credits */
 .credits.roll {
     opacity: 1;
-    animation: scrollCredits 35s linear forwards;
+    animation: scrollCredits 40s linear forwards;
 }
 
 @keyframes scrollCredits {
     0% { transform: translateY(100vh); }
-    100% { transform: translateY(-250vh); }
+    100% { transform: translateY(-200vh); }
 }
 
 .credits h2 { color: #e50914; margin-bottom: 20px; font-size: 2rem; }
 .credits p { margin: 10px 0; color: #ccc; font-size: 1.1rem; }
 
-/* Layar Hitam Penutup */
 #blackout {
     position: fixed;
+    top: 0; left: 0;
     width: 100%;
     height: 100%;
     background: black;
@@ -204,6 +205,198 @@ h1 {
 
     <div id="intro">
         <div class="netflix-logo">N</div>
+    </div>
+
+    <div class="background" id="bg"></div>
+
+    <div id="startScreen">
+        <button class="btn" onclick="startStory()">Play Movie 🎬</button>
+    </div>
+
+    <div class="container" id="mainContent">
+        <img src="her-photo.jpg" class="photo" id="photo" alt="Her Photo">
+        
+        <h1>Our Story</h1>
+        
+        <div class="message" id="text"></div>
+        
+        <button class="btn" id="endBtn" onclick="showEnding()" style="display:none; margin: 0 auto;">
+            The Ending ❤️
+        </button>
+    </div>
+
+    <div id="final">
+        <div class="credits" id="creditsText">
+            <h2>Forever & Always</h2>
+            <p>Based on a True Story</p><br>
+            
+            <p><strong>Starring</strong></p>
+            <p>You</p>
+            <p>&</p>
+            <p>Me</p><br>
+            
+            <p>Music by</p>
+            <p>Our Heartbeats</p><br>
+            
+            <p>If the world forgets us,</p>
+            <p>I will remind the stars</p>
+            <p>that you were loved.</p><br>
+            <p>Deeply.</p>
+            <p>Truly.</p><br>
+            
+            <p>Thank you for being my person.</p><br><br>
+            <h2>The End</h2>
+        </div>
+    </div>
+
+    <div id="blackout"></div>
+
+    <audio id="bgm" loop>
+        <source src="https://files.catbox.moe/zs81ug.mp3" type="audio/mpeg">
+    </audio>
+
+<script>
+    const textElement = document.getElementById("text");
+    const endBtn = document.getElementById("endBtn");
+    const bgm = document.getElementById("bgm");
+    let isTyping = false;
+    let typingTimer;
+
+    // Pesan Cinta
+    const message = `There are moments in life that feel ordinary.
+And then there are moments that change everything.
+
+Meeting you was never loud or dramatic.
+It was quiet.
+But inside me… everything shifted.
+
+You became the peace in my chaos.
+The warmth in my coldest nights.
+
+Every laugh we shared,
+every memory we built,
+it’s not just moments.
+They are pieces of forever.
+
+I want you to remember this:
+You are loved fiercely.
+Deeply.
+Without hesitation.
+
+Because loving you...
+has been the most beautiful chapter of my life.`;
+
+    // 1. Loading Selesai
+    window.onload = function() {
+        setTimeout(() => {
+            document.getElementById("intro").style.display = "none";
+            const startScreen = document.getElementById("startScreen");
+            startScreen.style.visibility = "visible";
+            startScreen.style.opacity = "1";
+        }, 3000);
+    };
+
+    // 2. Play Movie
+    function startStory() {
+        document.getElementById("startScreen").style.display = "none";
+        
+        const mainContent = document.getElementById("mainContent");
+        mainContent.classList.add("active");
+
+        bgm.volume = 0.6;
+        bgm.play().catch(e => console.log("Audio play failed"));
+
+        setTimeout(() => {
+            isTyping = true;
+            typeWriter(0);
+        }, 1000);
+    }
+
+    // 3. Efek Mengetik
+    function typeWriter(i) {
+        if (!isTyping) return;
+
+        if (i < message.length) {
+            textElement.textContent += message.charAt(i);
+            
+            // Scroll otomatis ke bawah mengikuti teks
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+
+            let char = message.charAt(i);
+            let speed = (char === "." || char === "\n") ? 400 : 40;
+            speed += Math.random() * 10;
+
+            typingTimer = setTimeout(() => typeWriter(i + 1), speed);
+        } else {
+            // Selesai ngetik
+            fadeInButton();
+            // Scroll sekali lagi memastikan tombol terlihat
+            setTimeout(() => {
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            }, 500);
+        }
+    }
+
+    function fadeInButton() {
+        endBtn.style.display = "block";
+        endBtn.style.opacity = 0;
+        let val = 0;
+        let fade = setInterval(() => {
+            if (val < 1) {
+                val += 0.05;
+                endBtn.style.opacity = val;
+            } else {
+                clearInterval(fade);
+            }
+        }, 50);
+    }
+
+    // 4. Ending
+    function showEnding() {
+        isTyping = false;
+        clearTimeout(typingTimer);
+        
+        // Scroll ke atas sedikit biar foto kelihatan saat di-zoom
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        document.getElementById("photo").classList.add("zoom");
+        document.getElementById("bg").style.filter = "blur(10px)";
+        
+        // Sembunyikan teks & tombol
+        document.getElementById("mainContent").style.opacity = "0";
+        setTimeout(() => { document.getElementById("mainContent").style.display = "none"; }, 1500);
+
+        // Tampilkan Credits
+        const finalDiv = document.getElementById("final");
+        finalDiv.style.display = "block";
+        
+        setTimeout(() => {
+            document.getElementById("creditsText").classList.add("roll");
+        }, 500);
+
+        // Fade out music
+        let vol = 0.6;
+        let fadeAudio = setInterval(() => {
+            if (vol > 0.05) {
+                vol -= 0.01;
+                bgm.volume = vol;
+            } else {
+                bgm.pause();
+                clearInterval(fadeAudio);
+            }
+        }, 200);
+
+        setTimeout(() => {
+            document.getElementById("blackout").style.opacity = "1";
+        }, 35000);
+    }
+</script>
+
+</body>
+</html>            <div class="netflix-logo">N</div>
     </div>
 
     <div class="background" id="bg"></div>
