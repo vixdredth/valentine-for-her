@@ -18,15 +18,15 @@
 body {
     background: black;
     color: white;
-    overflow-x: hidden; /* Hilangkan scroll samping */
-    overflow-y: auto;   /* Izinkan scroll bawah manual */
+    overflow-x: hidden; 
+    overflow-y: auto;   
     text-align: center;
     min-height: 100vh;
     padding-bottom: 50px;
 }
 
 /* ====================================
-   1. INTRO (NETFLIX STYLE)
+   1. INTRO
 ==================================== */
 #intro {
     position: fixed;
@@ -63,7 +63,6 @@ body {
     top: 0; left: 0;
     width: 100%;
     height: 100%;
-    /* Background statis & gelap agar teks kontras */
     background: radial-gradient(circle at center, #330000, #000000 80%);
     z-index: -1;
 }
@@ -98,17 +97,12 @@ body {
 .btn:hover { transform: scale(1.05); }
 
 /* ====================================
-   3. MAIN CONTENT (PHOTO & TEXT)
+   3. MAIN CONTENT
 ==================================== */
-/* PERBAIKAN PENTING DI SINI:
-   Menggunakan margin-top besar, bukan absolute positioning.
-   Ini mencegah teks bagian atas terpotong saat teks makin panjang.
-*/
 .container {
     position: relative;
     width: 85%;
     max-width: 600px;
-    /* Jarak dari atas layar supaya foto tidak nempel di status bar HP */
     margin: 100px auto 20px auto; 
     opacity: 0;
     visibility: hidden;
@@ -145,13 +139,12 @@ h1 {
     text-shadow: 0 2px 5px black;
 }
 
-/* CSS AGAR TEKS RAPI */
 .message {
     font-size: 1.1rem;
     line-height: 1.6;
     min-height: 100px;
     margin-bottom: 40px;
-    white-space: pre-line; /* Agar enter terbaca sebagai baris baru */
+    white-space: pre-line;
     text-shadow: 0 2px 4px black;
     color: #f0f0f0;
 }
@@ -177,6 +170,7 @@ h1 {
     opacity: 0;
 }
 
+/* Durasi Credits: 40 Detik */
 .credits.roll {
     opacity: 1;
     animation: scrollCredits 40s linear forwards;
@@ -218,11 +212,8 @@ h1 {
 
     <div class="container" id="mainContent">
         <img src="her-photo.jpg" class="photo" id="photo" alt="Her Photo">
-        
         <h1>Our Story</h1>
-        
         <div class="message" id="text"></div>
-        
         <button class="btn" id="endBtn" onclick="showEnding()" style="display:none; margin: 0 auto;">
             The Ending ❤️
         </button>
@@ -232,22 +223,18 @@ h1 {
         <div class="credits" id="creditsText">
             <h2>Forever & Always</h2>
             <p>Based on a True Story</p><br>
-            
             <p><strong>Starring</strong></p>
             <p>You</p>
             <p>&</p>
             <p>Me</p><br>
-            
             <p>Music by</p>
             <p>Our Heartbeats</p><br>
-            
             <p>If the world forgets us,</p>
             <p>I will remind the stars</p>
             <p>that you were loved.</p><br>
             <p>Deeply.</p>
             <p>Truly.</p><br>
-            
-            <p>Thank you for being my person.</p><br><br>
+            <p>Thank you for being my sweetheart.</p><br><br>
             <h2>The End</h2>
         </div>
     </div>
@@ -265,7 +252,6 @@ h1 {
     let isTyping = false;
     let typingTimer;
 
-    // Pesan Cinta
     const message = `There are moments in life that feel ordinary.
 And then there are moments that change everything.
 
@@ -289,7 +275,6 @@ Without hesitation.
 Because loving you...
 has been the most beautiful chapter of my life.`;
 
-    // 1. Loading Selesai
     window.onload = function() {
         setTimeout(() => {
             document.getElementById("intro").style.display = "none";
@@ -299,10 +284,8 @@ has been the most beautiful chapter of my life.`;
         }, 3000);
     };
 
-    // 2. Play Movie
     function startStory() {
         document.getElementById("startScreen").style.display = "none";
-        
         const mainContent = document.getElementById("mainContent");
         mainContent.classList.add("active");
 
@@ -315,15 +298,13 @@ has been the most beautiful chapter of my life.`;
         }, 1000);
     }
 
-    // 3. Efek Mengetik (DIPERBAIKI: Tanpa Auto Scroll Agresif)
     function typeWriter(i) {
         if (!isTyping) return;
 
         if (i < message.length) {
             textElement.textContent += message.charAt(i);
             
-            // LOGIKA BARU: Scroll hanya terjadi kalau ganti baris (\n)
-            // Ini mencegah efek "bergetar" setiap huruf
+            // Scroll hanya jika ganti baris
             if (message.charAt(i) === '\n') {
                 window.scrollTo({
                     top: document.body.scrollHeight,
@@ -331,16 +312,13 @@ has been the most beautiful chapter of my life.`;
                 });
             }
 
-            // Pengaturan kecepatan ketik
             let char = message.charAt(i);
             let speed = (char === "." || char === "\n") ? 500 : 40;
-            speed += Math.random() * 15; // Sedikit variasi biar natural
+            speed += Math.random() * 15;
 
             typingTimer = setTimeout(() => typeWriter(i + 1), speed);
         } else {
-            // Selesai ngetik
             fadeInButton();
-            // Scroll sedikit di akhir untuk memastikan tombol terlihat
             setTimeout(() => {
                 window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
             }, 500);
@@ -361,22 +339,19 @@ has been the most beautiful chapter of my life.`;
         }, 50);
     }
 
-    // 4. Ending
+    // --- LOGIKA AUDIO DIPERBAIKI DI SINI ---
     function showEnding() {
         isTyping = false;
         clearTimeout(typingTimer);
         
-        // Scroll balik ke atas supaya efek zoom foto kelihatan
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
         document.getElementById("photo").classList.add("zoom");
         document.getElementById("bg").style.filter = "blur(10px)";
         
-        // Sembunyikan teks & tombol
         document.getElementById("mainContent").style.opacity = "0";
         setTimeout(() => { document.getElementById("mainContent").style.display = "none"; }, 1500);
 
-        // Tampilkan Credits
         const finalDiv = document.getElementById("final");
         finalDiv.style.display = "block";
         
@@ -384,18 +359,21 @@ has been the most beautiful chapter of my life.`;
             document.getElementById("creditsText").classList.add("roll");
         }, 500);
 
-        // Fade out music
+        // UPDATE: Fade Out jauh lebih lambat (35-40 detik)
+        // Agar pas dengan teks ending
         let vol = 0.6;
         let fadeAudio = setInterval(() => {
-            if (vol > 0.05) {
-                vol -= 0.01;
+            if (vol > 0.01) {
+                // Kurangi volume sangat sedikit per langkah
+                vol -= 0.005; 
                 bgm.volume = vol;
             } else {
                 bgm.pause();
                 clearInterval(fadeAudio);
             }
-        }, 200);
+        }, 300); // Jalan setiap 300ms. Total waktu sekitar 36 detik.
 
+        // Blackout muncul di detik ke-35
         setTimeout(() => {
             document.getElementById("blackout").style.opacity = "1";
         }, 35000);
