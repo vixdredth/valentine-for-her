@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Cinematic Love Story ❤️</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body{
+    overflow:hidden;
+    background:black;
+    color:white;
+}
+
+/* Background Video Effect */
+.background{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background: radial-gradient(circle at center, rgba(255,105,180,0.4), black 70%);
+    animation: slowZoom 20s infinite alternate;
+}
+
+@keyframes slowZoom{
+    from{transform:scale(1);}
+    to{transform:scale(1.2);}
+}
+
+.container{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    text-align:center;
+    width:90%;
+    max-width:900px;
+}
+
+h1{
+    font-size:3em;
+    margin-bottom:20px;
+    letter-spacing:2px;
+    animation: fadeIn 3s ease;
+}
+
+@keyframes fadeIn{
+    from{opacity:0;}
+    to{opacity:1;}
+}
+
+.message{
+    font-size:1.2em;
+    min-height:150px;
+    margin-bottom:20px;
+    line-height:1.6em;
+}
+
+button{
+    padding:12px 30px;
+    border:none;
+    border-radius:30px;
+    background:#ff4da6;
+    color:white;
+    font-size:1em;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.1);
+}
+
+.photo{
+    width:220px;
+    height:220px;
+    border-radius:50%;
+    object-fit:cover;
+    border:5px solid white;
+    box-shadow:0 0 30px rgba(255,105,180,0.8);
+    margin-bottom:20px;
+    animation: glow 2s infinite alternate;
+}
+
+@keyframes glow{
+    from{box-shadow:0 0 15px rgba(255,105,180,0.6);}
+    to{box-shadow:0 0 40px rgba(255,105,180,1);}
+}
+
+/* Final Scene */
+#finalScene{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:black;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    font-size:2em;
+    opacity:0;
+    visibility:hidden;
+    transition:1.5s;
+}
+
+#finalScene.show{
+    opacity:1;
+    visibility:visible;
+}
+</style>
+</head>
+
+<body>
+
+<div class="background"></div>
+
+<audio id="bgMusic" autoplay loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/10/30/audio_946b6d19c2.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+    
+    <!-- GANTI FOTO DI SINI -->
+    <img src="her-photo.jpg" alt="Her Photo" class="photo">
+
+    <h1>Our Love Story ❤️</h1>
+    <div class="message" id="text"></div>
+    <button onclick="showFinal()">Watch The Ending 🎬</button>
+</div>
+
+<div id="finalScene">
+    <div>
+        In every lifetime,<br>
+        in every universe,<br><br>
+        I would still choose you.<br><br>
+        Forever. ❤️
+    </div>
+</div>
+
+<script>
+
+const message = `From the first time I saw you,
+my world changed.
+
+You became my favorite chapter,
+my favorite smile,
+my favorite everything.
+
+If love was a movie,
+you would be my most beautiful scene.
+
+And I promise,
+this is only the beginning of our forever.`;
+
+let i = 0;
+function typeWriter(){
+    if(i < message.length){
+        document.getElementById("text").innerHTML += message.charAt(i);
+        i++;
+        setTimeout(typeWriter, 40);
+    }
+}
+typeWriter();
+
+const music = document.getElementById("bgMusic");
+music.volume = 0.4;
+
+document.addEventListener("click", function(){
+    music.play().catch(()=>{});
+});
+
+function showFinal(){
+    document.getElementById("finalScene").classList.add("show");
+}
+
+</script>
+
+</body>
+</html>
