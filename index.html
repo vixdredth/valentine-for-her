@@ -119,8 +119,34 @@ button:hover{
 
 <body>
 
+<!-- Semua isi website kamu -->
 
-    
+<h1>For You ❤️</h1>
+
+<!-- AUDIO START -->
+<audio id="bgm" loop>
+  <source src="https://files.catbox.moe/zs81ug.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+window.addEventListener("click", function () {
+    const audio = document.getElementById("bgm");
+    audio.volume = 0;
+    audio.play();
+
+    let fadeIn = setInterval(() => {
+        if (audio.volume < 1) {
+            audio.volume += 0.05;
+        } else {
+            clearInterval(fadeIn);
+        }
+    }, 200);
+}, { once: true });
+</script>
+<!-- AUDIO END -->
+
+</body>
+ 
     <!-- GANTI FOTO DI SINI -->
     <img src="her-photo.jpg" alt="Her Photo" class="photo">
 
