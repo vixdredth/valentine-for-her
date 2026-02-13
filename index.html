@@ -3,387 +3,397 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Netflix Romance Original ❤️</title>
-
+<title>Netflix Love Story ❤️</title>
 <style>
-
 /* ====================================
-   1. GLOBAL
+   RESET & GLOBAL
 ==================================== */
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI', sans-serif;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
 }
 
-body{
-    background:black;
-    color:white;
-    overflow:hidden;
-    text-align:center;
-}
-
-/* ====================================
-   2. NETFLIX INTRO
-==================================== */
-#intro{
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:black;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-    z-index:100;
-}
-
-.red-sweep{
-    position:absolute;
-    width:200%;
-    height:6px;
-    background:linear-gradient(90deg, transparent, #e50914, transparent);
-    top:50%;
-    left:-100%;
-    animation:sweep 2s ease forwards;
-}
-
-@keyframes sweep{
-    from{left:-100%;}
-    to{left:100%;}
-}
-
-.netflix-logo{
-    font-size:130px;
-    font-weight:900;
-    color:#e50914;
-    opacity:0;
-    transform:scale(0.6);
-    animation:logoAnim 3s forwards;
-}
-
-@keyframes logoAnim{
-    0%{opacity:0; transform:scale(0.6);}
-    40%{opacity:1; transform:scale(1.2);}
-    70%{transform:scale(1);}
-    100%{opacity:0;}
+body {
+    background: black;
+    color: white;
+    overflow: hidden;
+    text-align: center;
 }
 
 /* ====================================
-   3. BACKGROUND
+   1. INTRO (NETFLIX STYLE)
 ==================================== */
-.background{
-    position:fixed;
-    width:100%;
-    height:100%;
-    background: radial-gradient(circle at center, rgba(255,0,0,0.2), black 70%);
-    animation:bgZoom 30s infinite alternate;
-    transition:2s ease;
-    z-index:-2;
+#intro {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
 }
 
-.background.blur{
-    filter:blur(20px) brightness(0.4);
+.netflix-logo {
+    font-size: 4rem; /* Mobile friendly */
+    font-weight: 900;
+    color: #e50914;
+    opacity: 0;
+    animation: popIn 3.5s forwards;
 }
 
-@keyframes bgZoom{
-    from{transform:scale(1);}
-    to{transform:scale(1.2);}
+@keyframes popIn {
+    0% { transform: scale(0.5); opacity: 0; }
+    30% { transform: scale(1.2); opacity: 1; }
+    60% { transform: scale(1); }
+    100% { transform: scale(1.5); opacity: 0; }
 }
 
 /* ====================================
-   4. START SCREEN
+   2. BACKGROUND & START
 ==================================== */
-#startScreen{
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:black;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    visibility:hidden;
-    z-index:10;
+.background {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(139, 0, 0, 0.4), black 90%);
+    animation: pulseBg 10s infinite alternate;
+    z-index: -1;
+    transition: filter 3s ease;
 }
 
-.btn{
-    padding:14px 35px;
-    border:none;
-    border-radius:30px;
-    background:#e50914;
-    color:white;
-    font-size:1em;
-    cursor:pointer;
-    transition:0.3s;
+@keyframes pulseBg {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
 }
 
-.btn:hover{
-    transform:scale(1.1);
+#startScreen {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: black; /* Tutup layar sampai intro selesai */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0; 
+    visibility: hidden;
+    transition: opacity 1s ease;
+    z-index: 50;
+}
+
+.btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 4px;
+    background: #e50914;
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+    transition: transform 0.2s;
+}
+.btn:hover { transform: scale(1.05); }
+
+/* ====================================
+   3. MAIN CONTENT (PHOTO & TEXT)
+==================================== */
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 600px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1.5s ease;
+    z-index: 10;
+}
+
+.container.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* PENTING: Style Foto */
+.photo {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid white;
+    box-shadow: 0 0 30px rgba(229, 9, 20, 0.5);
+    margin-bottom: 20px;
+    transition: transform 5s ease, opacity 2s ease;
+}
+
+/* Efek Zoom saat ending */
+.photo.zoom {
+    transform: scale(2.5);
+    opacity: 0; 
+}
+
+h1 {
+    margin-bottom: 15px;
+    font-size: 1.8rem;
+    color: #e50914;
+    text-shadow: 0 2px 5px black;
+}
+
+/* FIX STUCK TEXT: white-space pre-line agar enter terbaca */
+.message {
+    font-size: 1rem;
+    line-height: 1.6;
+    min-height: 200px;
+    margin-bottom: 25px;
+    white-space: pre-line; 
+    text-shadow: 0 2px 4px black;
 }
 
 /* ====================================
-   5. MAIN STORY
+   4. ENDING / CREDITS
 ==================================== */
-.container{
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    width:90%;
-    max-width:800px;
-    transition:2s ease;
+#final {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 20;
 }
 
-.container.hide{
-    opacity:0;
+.credits {
+    position: absolute;
+    bottom: -100px; /* Mulai di bawah layar */
+    width: 100%;
+    text-align: center;
+    opacity: 0;
 }
 
-.photo{
-    width:230px;
-    height:230px;
-    border-radius:50%;
-    object-fit:cover;
-    border:5px solid white;
-    box-shadow:0 0 60px rgba(255,0,0,0.7);
-    margin-bottom:25px;
-    transition:6s ease;
+/* Animasi Credits */
+.credits.roll {
+    opacity: 1;
+    animation: scrollCredits 35s linear forwards;
 }
 
-.photo.zoom{
-    transform:scale(1.5);
+@keyframes scrollCredits {
+    0% { transform: translateY(100vh); }
+    100% { transform: translateY(-250vh); }
 }
 
-h1{
-    font-size:2.4em;
-    margin-bottom:20px;
-}
+.credits h2 { color: #e50914; margin-bottom: 20px; font-size: 2rem; }
+.credits p { margin: 10px 0; color: #ccc; font-size: 1.1rem; }
 
-.message{
-    font-size:1.15em;
-    line-height:1.7em;
-    min-height:160px;
-    margin-bottom:30px;
-}
-
-/* ====================================
-   6. FINAL CREDIT
-==================================== */
-#final{
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:black;
-    opacity:0;
-    visibility:hidden;
-    transition:2s ease;
-    z-index:20;
-}
-
-#final.show{
-    opacity:1;
-    visibility:visible;
-}
-
-.credits{
-    position:absolute;
-    bottom:-100%;
-    width:100%;
-    animation:scrollUp 50s linear forwards;
-}
-
-@keyframes scrollUp{
-    from{transform:translateY(0);}
-    to{transform:translateY(-260%);}
-}
-
-.blackFade{
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:black;
-    opacity:0;
-    transition:4s ease;
-    z-index:30;
-}
-
-.blackFade.show{
-    opacity:1;
+/* Layar Hitam Penutup */
+#blackout {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: black;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 5s ease;
+    z-index: 99;
 }
 
 </style>
 </head>
-
 <body>
 
-<!-- ================= INTRO ================= -->
-<div id="intro">
-    <div class="red-sweep"></div>
-    <div class="netflix-logo">N</div>
-</div>
-
-<div class="background" id="bg"></div>
-
-<!-- ================= START ================= -->
-<div id="startScreen">
-    <button class="btn" onclick="startStory()">NETFLIX ROMANCE ❤️</button>
-</div>
-
-<!-- ================= STORY ================= -->
-<div class="container" id="mainContent">
-    <img src="her-photo.jpg" class="photo" id="photo">
-    <h1>Our Love Story</h1>
-    <div class="message" id="text"></div>
-    <button class="btn" onclick="showEnding()">Watch The Ending 🎬</button>
-</div>
-
-<!-- ================= ENDING ================= -->
-<div id="final">
-    <div class="credits">
-        <h2>Forever & Always</h2>
-        <p>A Love That Changed Everything</p><br><br>
-        <p>Directed by Fate</p>
-        <p>Written by Destiny</p>
-        <p>Produced by the Universe</p><br><br>
-        <p>Starring</p>
-        <p>You</p>
-        <p>And</p>
-        <p>Me</p><br><br>
-        <p>If one day the sun grows faint...</p>
-        <p>and all the stars dim...</p>
-        <p>I want you to remember this:</p><br>
-        <p>You were loved deeply.</p>
-        <p>Completely.</p>
-        <p>Without hesitation.</p><br><br>
-        <p>And in every lifetime,</p>
-        <p>my soul will still choose yours.</p><br><br><br>
-        <h2>The End</h2>
+    <div id="intro">
+        <div class="netflix-logo">N</div>
     </div>
-</div>
 
-<div class="blackFade" id="blackFade"></div>
+    <div class="background" id="bg"></div>
 
-<!-- ================= AUDIO ================= -->
-<audio id="bgm" loop preload="auto">
-  <source src="https://files.catbox.moe/zs81ug.mp3" type="audio/mpeg">
-</audio>
+    <div id="startScreen">
+        <button class="btn" onclick="startStory()">Play Movie 🎬</button>
+    </div>
 
-<audio id="whoosh" preload="auto">
-  <source src="https://cdn.pixabay.com/audio/2021/08/04/audio_cae9d97166.mp3" type="audio/mpeg">
-</audio>
+    <div class="container" id="mainContent">
+        <img src="her-photo.jpg" class="photo" id="photo" alt="Her Photo">
+        
+        <h1>Our Story</h1>
+        
+        <div class="message" id="text"></div>
+        
+        <button class="btn" id="endBtn" onclick="showEnding()" style="display:none; margin: 0 auto;">
+            The Ending ❤️
+        </button>
+    </div>
+
+    <div id="final">
+        <div class="credits" id="creditsText">
+            <h2>Forever & Always</h2>
+            <p>Based on a True Story</p><br><br>
+            
+            <p><strong>Starring</strong></p>
+            <p>You</p>
+            <p>&</p>
+            <p>Me</p><br><br>
+            
+            <p>Music by</p>
+            <p>Our Heartbeats</p><br><br>
+            
+            <p>If the world forgets us,</p>
+            <p>I will remind the stars</p>
+            <p>that you were loved.</p><br>
+            <p>Deeply.</p>
+            <p>Truly.</p><br><br>
+            
+            <p>Thank you for being my person.</p><br><br>
+            <h2>The End</h2>
+        </div>
+    </div>
+
+    <div id="blackout"></div>
+
+    <audio id="bgm" loop>
+        <source src="https://files.catbox.moe/zs81ug.mp3" type="audio/mpeg">
+    </audio>
 
 <script>
+    // --- KONFIGURASI ---
+    const textElement = document.getElementById("text");
+    const endBtn = document.getElementById("endBtn");
+    const bgm = document.getElementById("bgm");
+    let isTyping = false;
+    let typingTimer;
 
-/* ================= INTRO SEQUENCE ================= */
-window.onload = function(){
-    const whoosh = document.getElementById("whoosh");
-    whoosh.volume = 0.8;
-    whoosh.play();
-
-    setTimeout(()=>{
-        document.getElementById("intro").style.display="none";
-        document.getElementById("startScreen").style.visibility="visible";
-    },3000);
-};
-
-/* ================= STORY START ================= */
-function startStory(){
-    const audio = document.getElementById("bgm");
-    audio.currentTime = 0;
-    audio.volume = 0;
-    audio.play();
-
-    let fade = setInterval(()=>{
-        if(audio.volume < 1){
-            audio.volume += 0.04;
-        } else clearInterval(fade);
-    },200);
-
-    document.getElementById("startScreen").style.display="none";
-    typeWriter();
-}
-
-/* ================= TYPING STORY ================= */
-const message = `There are moments in life that feel ordinary.
-
+    // --- PESAN CINTA (Gunakan Enter untuk baris baru) ---
+    const message = `There are moments in life that feel ordinary.
 And then there are moments that change everything.
 
 Meeting you was never loud or dramatic.
 It was quiet.
-
-But inside me…
-everything shifted.
+But inside me… everything shifted.
 
 You became the peace in my chaos.
 The warmth in my coldest nights.
-The voice in my silent prayers.
-
-You are the kind of person
-I didn’t know my heart always wanted,
-but now can’t imagine life without.
 
 Every laugh we shared,
 every memory we built,
 it’s not just moments.
-
-They are pieces of forever
-being written one second at a time.
-
-If someday life tests us,
-if storms rage around us,
-if time tries to prove us wrong…
+They are pieces of forever.
 
 I want you to remember this:
-You were loved fiercely.
+You are loved fiercely.
 Deeply.
 Without hesitation.
 
-And if this world ever forgets our story…
-I won’t.
+Because loving you...
+has been the most beautiful chapter of my life.`;
 
-Because loving you
-has been the most beautiful chapter
-of my entire life.`;
+    // 1. Loading Selesai -> Hapus Intro
+    window.onload = function() {
+        setTimeout(() => {
+            document.getElementById("intro").style.display = "none";
+            const startScreen = document.getElementById("startScreen");
+            startScreen.style.visibility = "visible";
+            startScreen.style.opacity = "1";
+        }, 3500);
+    };
 
-let i = 0;
-function typeWriter(){
-    if(i < message.length){
-        document.getElementById("text").innerHTML += message.charAt(i);
+    // 2. Tombol Play Ditekan
+    function startStory() {
+        // Hilangkan tombol start
+        document.getElementById("startScreen").style.opacity = "0";
+        setTimeout(() => {
+            document.getElementById("startScreen").style.display = "none";
+        }, 1000);
 
-        let speed = (message.charAt(i)==="." || message.charAt(i)==="\n")?450:35;
-        i++;
-        setTimeout(typeWriter, speed);
+        // Munculkan konten utama
+        const mainContent = document.getElementById("mainContent");
+        mainContent.classList.add("active");
+
+        // Putar Musik
+        bgm.volume = 0.6;
+        bgm.play().catch(error => {
+            console.log("Autoplay blocked, user interaction needed first.");
+        });
+
+        // Mulai Ngetik setelah jeda sedikit
+        setTimeout(() => {
+            isTyping = true;
+            typeWriter(0);
+        }, 1500);
     }
-}
 
-/* ================= ENDING ANIMATION ================= */
-function showEnding(){
-    const audio = document.getElementById("bgm");
-    const photo = document.getElementById("photo");
-    const main = document.getElementById("mainContent");
-    const bg = document.getElementById("bg");
-    const final = document.getElementById("final");
-    const black = document.getElementById("blackFade");
+    // 3. Efek Mengetik (Typewriter)
+    function typeWriter(i) {
+        if (!isTyping) return; // Stop jika user klik ending duluan
 
-    photo.classList.add("zoom");
-    bg.classList.add("blur");
+        if (i < message.length) {
+            textElement.textContent += message.charAt(i);
+            
+            // Logika Kecepatan:
+            // Jika titik/koma/enter = lambat. Huruf biasa = cepat.
+            let char = message.charAt(i);
+            let speed = (char === "." || char === "\n") ? 500 : 50;
+            
+            // Randomize sedikit biar natural
+            speed += Math.random() * 20;
 
-    setTimeout(()=> main.classList.add("hide"),1800);
-    setTimeout(()=> final.classList.add("show"),2800);
-
-    let fadeOut = setInterval(()=>{
-        if(audio.volume > 0.02){
-            audio.volume -= 0.02;
-        } else{
-            audio.pause();
-            clearInterval(fadeOut);
+            typingTimer = setTimeout(() => typeWriter(i + 1), speed);
+        } else {
+            // Selesai ngetik -> Munculkan tombol Ending
+            fadeInButton();
         }
-    },300);
+    }
 
-    setTimeout(()=> black.classList.add("show"),48000);
-}
+    function fadeInButton() {
+        endBtn.style.display = "block";
+        endBtn.style.opacity = 0;
+        let val = 0;
+        let fade = setInterval(() => {
+            if (val < 1) {
+                val += 0.05;
+                endBtn.style.opacity = val;
+            } else {
+                clearInterval(fade);
+            }
+        }, 50);
+    }
 
+    // 4. Animasi Ending
+    function showEnding() {
+        isTyping = false; // Stop mesin tik
+        clearTimeout(typingTimer);
+
+        // Zoom Foto
+        document.getElementById("photo").classList.add("zoom");
+        
+        // Blur Background
+        document.getElementById("bg").style.filter = "blur(10px) brightness(0.3)";
+
+        // Hilangkan Teks Utama
+        document.getElementById("mainContent").style.opacity = "0";
+
+        // Jalankan Credit Scene
+        setTimeout(() => {
+            document.getElementById("creditsText").classList.add("roll");
+        }, 1000);
+
+        // Fade Out Musik Pelan-pelan
+        let vol = 0.6;
+        let fadeAudio = setInterval(() => {
+            if (vol > 0.05) {
+                vol -= 0.02;
+                bgm.volume = vol;
+            } else {
+                bgm.pause();
+                clearInterval(fadeAudio);
+            }
+        }, 300);
+
+        // Layar Hitam Total setelah credit (kira-kira 30 detik)
+        setTimeout(() => {
+            document.getElementById("blackout").style.opacity = "1";
+        }, 30000);
+    }
 </script>
 
 </body>
-</html>
+</html>    
