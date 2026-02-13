@@ -20,14 +20,14 @@ body{
     text-align:center;
 }
 
-/* Background Glow */
+/* Background */
 .background{
     position:fixed;
     width:100%;
     height:100%;
     background: radial-gradient(circle at center, rgba(255,105,180,0.4), black 70%);
     animation: zoomBg 25s infinite alternate;
-    z-index:-1;
+    z-index:-2;
 }
 
 @keyframes zoomBg{
@@ -35,6 +35,13 @@ body{
     to{transform:scale(1.15);}
 }
 
+/* Blur cinematic */
+.blur{
+    filter:blur(15px);
+    transition:2s ease;
+}
+
+/* Main container */
 .container{
     position:absolute;
     top:50%;
@@ -42,6 +49,12 @@ body{
     transform:translate(-50%,-50%);
     width:90%;
     max-width:800px;
+    transition:1.5s ease;
+}
+
+.hideMain{
+    opacity:0;
+    pointer-events:none;
 }
 
 .photo{
@@ -52,11 +65,11 @@ body{
     border:5px solid white;
     box-shadow:0 0 40px rgba(255,105,180,0.8);
     margin-bottom:20px;
-    transition:3s ease;
+    transition:4s ease;
 }
 
 .zoomEnding{
-    transform:scale(1.3);
+    transform:scale(1.4);
 }
 
 h1{
@@ -98,7 +111,7 @@ button:hover{
     z-index:10;
 }
 
-/* Final Scene Overlay */
+/* FINAL SCENE */
 #finalScene{
     position:fixed;
     width:100%;
@@ -110,9 +123,10 @@ button:hover{
     flex-direction:column;
     opacity:0;
     visibility:hidden;
-    transition:2s;
+    transition:2s ease;
     text-align:center;
     padding:20px;
+    z-index:20;
 }
 
 #finalScene.show{
@@ -124,11 +138,11 @@ button:hover{
     margin-top:40px;
     font-size:0.9em;
     opacity:0;
-    animation: fadeCredit 4s forwards;
+    animation:creditFade 5s forwards;
     animation-delay:3s;
 }
 
-@keyframes fadeCredit{
+@keyframes creditFade{
     from{opacity:0;}
     to{opacity:1;}
 }
@@ -137,16 +151,15 @@ button:hover{
 
 <body>
 
-<div class="background"></div>
+<div class="background" id="bg"></div>
 
-<!-- START SCREEN -->
 <div id="startScreen">
     <button onclick="startExperience()">Tap to Start Our Story ❤️</button>
 </div>
 
-<div class="container">
+<div class="container" id="mainContent">
 
-    <img src="her-photo.jpg" alt="Her Photo" class="photo" id="herPhoto">
+    <img src="her-photo.jpg" class="photo" id="herPhoto">
 
     <h1>Our Love Story ❤️</h1>
 
@@ -156,7 +169,6 @@ button:hover{
 
 </div>
 
-<!-- FINAL SCENE -->
 <div id="finalScene">
     <div style="font-size:2em;">
         In every lifetime,<br>
@@ -172,7 +184,6 @@ button:hover{
     </div>
 </div>
 
-<!-- MUSIC -->
 <audio id="bgm" loop preload="auto">
     <source src="https://files.catbox.moe/zs81ug.mp3" type="audio/mpeg">
 </audio>
@@ -187,8 +198,8 @@ function startExperience(){
     audio.currentTime = 0;
     audio.volume = 0;
 
-    audio.play().then(() => {
-        let fade = setInterval(() => {
+    audio.play().then(()=>{
+        let fade = setInterval(()=>{
             if(audio.volume < 1){
                 audio.volume += 0.05;
             } else {
@@ -209,117 +220,48 @@ And I promise, this is only the beginning of our forever.`;
 
 let i=0;
 function typeWriter(){
-    if(i<message.length){
-        document.getElementById("text").innerHTML+=message.charAt(i);
+    if(i < message.length){
+        document.getElementById("text").innerHTML += message.charAt(i);
         i++;
         setTimeout(typeWriter,40);
     }
 }
 
-/* FINAL SCENE */
+/* FINAL */
 function showFinal(){
+
     const audio = document.getElementById("bgm");
     const photo = document.getElementById("herPhoto");
     const finalScene = document.getElementById("finalScene");
+    const main = document.getElementById("mainContent");
+    const bg = document.getElementById("bg");
 
-    // Slow zoom photo
+    // Zoom photo
     photo.classList.add("zoomEnding");
+
+    // Blur background
+    bg.classList.add("blur");
 
     // Fade out music
     let fadeOut = setInterval(()=>{
         if(audio.volume > 0.05){
             audio.volume -= 0.05;
-        }else{
+        } else {
             audio.volume = 0;
             audio.pause();
             clearInterval(fadeOut);
         }
     },200);
 
-    // Show final scene after delay
+    // Hide main content smoothly
+    setTimeout(()=>{
+        main.classList.add("hideMain");
+    },1500);
+
+    // Show final scene
     setTimeout(()=>{
         finalScene.classList.add("show");
-    },2000);
-}
-
-</script>
-
-</body>
-</html>
-    opacity:1;
-    visibility:visible;
-}
-</style>
-</head>
-
-<body>
-
-<div class="background"></div>
-
-<div class="container">
-
-    <!-- GANTI FOTO DI SINI -->
-    <img src="her-photo.jpg" alt="Her Photo" class="photo">
-
-    <h1>Our Love Story ❤️</h1>
-
-    <div class="message" id="text"></div>
-
-    <button onclick="showFinal()">Watch The Ending 🎬</button>
-
-</div>
-
-<!-- FINAL SCENE -->
-<div id="finalScene">
-    <div>
-        In every lifetime,<br>
-        in every universe,<br><br>
-        I would still choose you.<br><br>
-        Forever. ❤️
-    </div>
-</div>
-
-<!-- AUDIO -->
-<audio id="bgm" loop>
-    <source src="https://files.catbox.moe/zs81ug.mp3" type="audio/mpeg">
-</audio>
-
-<script>
-
-/* TYPEWRITER */
-const message = `From the first time I saw you, my world changed.
-You became my favorite chapter, my favorite smile, my favorite everything.
-If love was a movie, you would be my most beautiful scene.
-And I promise, this is only the beginning of our forever.`;
-
-let i = 0;
-function typeWriter(){
-    if(i < message.length){
-        document.getElementById("text").innerHTML += message.charAt(i);
-        i++;
-        setTimeout(typeWriter, 40);
-    }
-}
-typeWriter();
-
-/* MUSIC FADE IN */
-window.addEventListener("click", function () {
-    const audio = document.getElementById("bgm");
-    audio.volume = 0;
-    audio.play();
-
-    let fadeIn = setInterval(() => {
-        if (audio.volume < 1) {
-            audio.volume += 0.05;
-        } else {
-            clearInterval(fadeIn);
-        }
-    }, 200);
-}, { once: true });
-
-/* FINAL SCENE */
-function showFinal(){
-    document.getElementById("finalScene").classList.add("show");
+    },2500);
 }
 
 </script>
