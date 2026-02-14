@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Netflix Love Story ❤️</title>
+<title>Happy Valentine's Day ❤️</title>
 <style>
 /* ====================================
    RESET & GLOBAL
@@ -181,7 +181,7 @@ h1 {
     100% { transform: translateY(-200vh); }
 }
 
-.credits h2 { color: #e50914; margin-bottom: 20px; font-size: 2rem; }
+.credits h2 { color: #e50914; margin-bottom: 20px; font-size: 2.2rem; }
 .credits p { margin: 10px 0; color: #ccc; font-size: 1.1rem; }
 
 #blackout {
@@ -234,8 +234,9 @@ h1 {
             <p>that you were loved.</p><br>
             <p>Deeply.</p>
             <p>Truly.</p><br>
-            <p>Thank you for being my sweetheart.</p><br><br>
-            <h2>The End</h2>
+            <p>I Love you more and more sweetheart.</p><br><br>
+            
+            <h2>Happy Valentine's Day ❤️</h2>
         </div>
     </div>
 
@@ -252,6 +253,7 @@ h1 {
     let isTyping = false;
     let typingTimer;
 
+    // UPDATE: Menambahkan "Happy Valentine's Day" di akhir pesan
     const message = `There are moments in life that feel ordinary.
 And then there are moments that change everything.
 
@@ -273,7 +275,9 @@ Deeply.
 Without hesitation.
 
 Because loving you...
-has been the most beautiful chapter of my life.`;
+has been the most beautiful chapter of my life.
+
+Happy Valentine's Day, My Love. ❤️`;
 
     window.onload = function() {
         setTimeout(() => {
@@ -304,7 +308,6 @@ has been the most beautiful chapter of my life.`;
         if (i < message.length) {
             textElement.textContent += message.charAt(i);
             
-            // Scroll hanya jika ganti baris
             if (message.charAt(i) === '\n') {
                 window.scrollTo({
                     top: document.body.scrollHeight,
@@ -339,7 +342,6 @@ has been the most beautiful chapter of my life.`;
         }, 50);
     }
 
-    // --- LOGIKA AUDIO DIPERBAIKI DI SINI ---
     function showEnding() {
         isTyping = false;
         clearTimeout(typingTimer);
@@ -359,21 +361,19 @@ has been the most beautiful chapter of my life.`;
             document.getElementById("creditsText").classList.add("roll");
         }, 500);
 
-        // UPDATE: Fade Out jauh lebih lambat (35-40 detik)
-        // Agar pas dengan teks ending
+        // Fade Out Music Pelan (36 detik)
         let vol = 0.6;
         let fadeAudio = setInterval(() => {
-            if (vol > 0.01) {
-                // Kurangi volume sangat sedikit per langkah
+            if (vol > 0.005) {
                 vol -= 0.005; 
                 bgm.volume = vol;
             } else {
                 bgm.pause();
                 clearInterval(fadeAudio);
             }
-        }, 300); // Jalan setiap 300ms. Total waktu sekitar 36 detik.
+        }, 300); 
 
-        // Blackout muncul di detik ke-35
+        // Blackout di detik 35
         setTimeout(() => {
             document.getElementById("blackout").style.opacity = "1";
         }, 35000);
@@ -381,4 +381,4 @@ has been the most beautiful chapter of my life.`;
 </script>
 
 </body>
-   </html>
+</html>
